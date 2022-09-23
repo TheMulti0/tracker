@@ -21,6 +21,8 @@ import java.net.MalformedURLException;
 import java.net.Socket;
 import java.net.URL;
 
+import themulti0.tracker.client.http.RequestFactory;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -29,25 +31,21 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = "http://10.0.2.2:8080";
 
-        // Request a string response from the provided URL.
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        // Display the first 500 characters of the response string.
-                        System.out.println();
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                System.out.println();
-            }
-        });
+        RequestFactory f = new RequestFactory();
 
-// Add the request to the RequestQueue.
-        queue.add(stringRequest);
+        Request<Boolean> post = f.post(
+                "login",
+                "",
+                response -> {
+                    System.out.println(response);
+                },
+                r -> {
+
+                }
+        );
+
+        queue.add(post);
 
     }
 }
