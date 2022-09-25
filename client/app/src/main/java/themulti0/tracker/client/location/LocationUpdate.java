@@ -1,4 +1,4 @@
-package themulti0.tracker.client.http;
+package themulti0.tracker.client.location;
 
 public class LocationUpdate {
     private final double lat;
