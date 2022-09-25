@@ -14,10 +14,10 @@ import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.subjects.BehaviorSubject;
 
 public class LocationStream {
-    private FusedLocationProviderClient client;
-    private BehaviorSubject<LocationUpdate> subject;
-    private LocationRequest request;
-    private LocationCallback callback;
+    private final FusedLocationProviderClient client;
+    private final BehaviorSubject<LocationUpdate> subject;
+    private final LocationRequest request;
+    private final LocationCallback callback;
 
     public static Observable<LocationUpdate> listen(FusedLocationProviderClient client) {
         return new LocationStream(client).createStream();

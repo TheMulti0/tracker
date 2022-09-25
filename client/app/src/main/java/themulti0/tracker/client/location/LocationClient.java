@@ -6,8 +6,8 @@ import com.android.volley.RequestQueue;
 import themulti0.tracker.client.http.RequestFactory;
 
 public class LocationClient {
-    private RequestQueue queue;
-    private RequestFactory requestFactory;
+    private final RequestQueue queue;
+    private final RequestFactory requestFactory;
 
     public LocationClient(RequestQueue queue) {
         this.queue = queue;

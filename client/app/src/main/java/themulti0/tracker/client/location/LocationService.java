@@ -16,7 +16,6 @@ import io.reactivex.rxjava3.disposables.Disposable;
 
 public class LocationService extends Service {
 
-    private LocationClient client;
     private Disposable subscription;
 
     @Nullable
@@ -27,7 +26,7 @@ public class LocationService extends Service {
 
     @Override
     public void onCreate() {
-        this.client = new LocationClient(Volley.newRequestQueue(this));
+        LocationClient client = new LocationClient(Volley.newRequestQueue(this));
 
         FusedLocationProviderClient fused = LocationServices.getFusedLocationProviderClient(this);
 
@@ -35,7 +34,7 @@ public class LocationService extends Service {
 
         Observable<LocationUpdate> locationStream = LocationStream.listen(fused);
 
-        subscription = locationStream.subscribe(this.client::sendLocationUpdate);
+        subscription = locationStream.subscribe(client::sendLocationUpdate);
     }
 
     @Override
