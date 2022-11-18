@@ -1,27 +1,35 @@
+
 package themulti0.tracker.client.location;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
+import android.os.Build;
 
-import themulti0.tracker.client.http.RequestFactory;
+import androidx.annotation.RequiresApi;
+
+import com.microsoft.signalr.HubConnection;
+
+import java.util.concurrent.CompletableFuture;
+
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.subjects.BehaviorSubject;
+import themulti0.tracker.client.signalr.HubFactory;
 
 public class LocationClient {
-    private final RequestQueue queue;
-    private final RequestFactory requestFactory;
+    private static final String path = "/Client";
 
-    public LocationClient(RequestQueue queue) {
-        this.queue = queue;
-        this.requestFactory = new RequestFactory();
+    private final HubConnection _connection;
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public static CompletableFuture<LocationClient> Create(String baseUrl) {
+        return HubFactory
+                .Create(baseUrl + path)
+                .thenApply(LocationClient::new);
     }
 
-    public void sendLocationUpdate(LocationUpdate locationUpdate) {
-        Request<Object> request = requestFactory.post(
-            "location",
-            locationUpdate,
-            e -> {},
-            e -> {}
-        );
+    LocationClient(HubConnection connection) {
+        _connection = connection;
+    }
 
-        this.queue.add(request);
+    public void sendLocation(LocationUpdate location) {
+        _connection.send("OnNewLocation", location);
     }
 }

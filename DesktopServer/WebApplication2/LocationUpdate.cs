@@ -1,4 +1,4 @@
-﻿namespace WebApplication2.Controllers ;
+﻿namespace WebApplication2 ;
 
     public record LocationUpdate
     {

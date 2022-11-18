@@ -1,34 +1,50 @@
 package themulti0.tracker.server.location;
 
-import android.util.Log;
+import android.os.Build;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
+import androidx.annotation.RequiresApi;
 
-import themulti0.tracker.server.http.RequestFactory;
+import com.microsoft.signalr.HubConnection;
+
+import java.util.concurrent.CompletableFuture;
+
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.subjects.BehaviorSubject;
+import themulti0.tracker.server.signalr.HubFactory;
 
 public class LocationClient {
-    private final RequestQueue queue;
-    private final RequestFactory requestFactory;
+    private static final String path = "/Server";
 
-    public LocationClient(RequestQueue queue) {
-        this.queue = queue;
-        this.requestFactory = new RequestFactory();
+    private final HubConnection _connection;
+    private final BehaviorSubject<LocationUpdate> _location;
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public static CompletableFuture<LocationClient> Create(String baseUrl) {
+        return HubFactory
+            .Create(baseUrl + path)
+            .thenApply(LocationClient::new);
     }
 
-    public void getLocationUpdate(
-            Response.Listener<LocationUpdate> listener
-    ) {
-        Request<LocationUpdate> request = requestFactory.get(
-                LocationUpdate.class,
-            "location",
-                listener,
-                e -> {
-                    Log.e("REST", "getLocationUpdate Failed", e);
-                }
-        );
+    private LocationClient(HubConnection connection) {
+        _connection = connection;
+        _location = BehaviorSubject.create();
 
-        this.queue.add(request);
+        _connection.on(
+            "OnNewLocation",
+            _location::onNext,
+            LocationUpdate.class);
+    }
+
+    public Observable<LocationUpdate> getLocation() {
+        return _location
+                .doOnSubscribe(d -> updateCurrentLocation());
+    }
+
+    private void updateCurrentLocation() {
+        LocationUpdate currentLocation = _connection
+                .invoke(LocationUpdate.class, "SendCurrentLocation")
+                .blockingGet();
+
+        _location.onNext(currentLocation);
     }
 }

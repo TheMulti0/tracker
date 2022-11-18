@@ -42,4 +42,7 @@ dependencies {
     implementation 'androidx.work:work-runtime:2.5.0'
     implementation "io.reactivex.rxjava3:rxjava:3.0.13-RC2"
 
+    implementation 'com.microsoft.signalr:signalr:7.0.0'
+    implementation 'org.slf4j:slf4j-api:1.7.36'
+    implementation 'org.slf4j:slf4j-android:1.7.36'
 }
