@@ -30,7 +30,7 @@ public class LocationClient {
         _location = BehaviorSubject.create();
 
         _connection.on(
-            "OnNewLocation",
+            "OnLocationUpdate",
             _location::onNext,
             LocationUpdate.class);
     }

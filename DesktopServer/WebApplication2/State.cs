@@ -8,5 +8,11 @@
             Lat = 6,
             Lon = 3,
         };
+
+        public SensorUpdate Sensor { get; set; } = new SensorUpdate
+        {
+            Sensor = "idk",
+            Values = Array.Empty<float>()
+        };
     }
 }

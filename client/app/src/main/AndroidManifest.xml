@@ -31,6 +31,10 @@
             android:name=".location.LocationService"
             android:enabled="true" />
 
+        <service
+            android:name=".sensor.SensorService"
+            android:enabled="true" />
+
     </application>
 
 </manifest>

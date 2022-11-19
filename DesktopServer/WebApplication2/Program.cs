@@ -15,6 +15,7 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapHub<ServerHub>("/Server");
-app.MapHub<ClientHub>("/Client");
+app.MapHub<LocationHub>("/Location");
+app.MapHub<SensorHub>("/Sensor");
 
 app.Run();

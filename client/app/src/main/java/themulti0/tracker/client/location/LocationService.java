@@ -1,7 +1,6 @@
 package themulti0.tracker.client.location;
 
 import android.app.Service;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.IBinder;
@@ -9,7 +8,6 @@ import android.os.IBinder;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
-import com.android.volley.toolbox.Volley;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 
@@ -17,6 +15,7 @@ import java.util.concurrent.ExecutionException;
 
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.disposables.Disposable;
+import themulti0.tracker.client.models.LocationUpdate;
 
 public class LocationService extends Service {
 
@@ -39,7 +38,7 @@ public class LocationService extends Service {
             FusedLocationProviderClient fused = LocationServices.getFusedLocationProviderClient(this);
             Observable<LocationUpdate> locationStream = LocationStream.listen(fused);
 
-            subscription = locationStream.subscribe(client::sendLocation);
+            subscription = locationStream.subscribe(client::sendLocationUpdate);
         } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {

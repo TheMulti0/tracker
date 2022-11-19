@@ -2,6 +2,8 @@
 {
     public interface IServer
     {
-        Task OnNewLocation(LocationUpdate location);
+        Task OnLocationUpdate(LocationUpdate location);
+        
+        Task OnSensorUpdate(SensorUpdate sensor);
     }
 }
