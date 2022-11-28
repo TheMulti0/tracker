@@ -1,18 +1,21 @@
 package themulti0.tracker.client.location;
 
 import android.app.Service;
-import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.IBinder;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 
-import com.android.volley.toolbox.Volley;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 
+import java.util.concurrent.ExecutionException;
+
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.disposables.Disposable;
+import themulti0.tracker.client.models.LocationUpdate;
 
 public class LocationService extends Service {
 
@@ -24,17 +27,24 @@ public class LocationService extends Service {
         return null;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onCreate() {
-        LocationClient client = new LocationClient(Volley.newRequestQueue(this));
+        try {
+            LocationClient client = LocationClient.Create("http://10.0.2.2:8080").get();
 
-        FusedLocationProviderClient fused = LocationServices.getFusedLocationProviderClient(this);
+            // TODO check if gps is enabled and check permissions
 
-        // TODO check if gps is enabled and check permissions
+            FusedLocationProviderClient fused = LocationServices.getFusedLocationProviderClient(this);
+            Observable<LocationUpdate> locationStream = LocationStream.listen(fused);
 
-        Observable<LocationUpdate> locationStream = LocationStream.listen(fused);
+            subscription = locationStream.subscribe(client::sendLocationUpdate);
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
-        subscription = locationStream.subscribe(client::sendLocationUpdate);
     }
 
     @Override

@@ -12,6 +12,7 @@ import com.google.android.gms.location.Priority;
 
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.subjects.BehaviorSubject;
+import themulti0.tracker.client.models.LocationUpdate;
 
 public class LocationStream {
     private final FusedLocationProviderClient client;
