@@ -38,16 +38,21 @@ public class SensorFragment extends Fragment {
     private void onSensorUpdate(
             TextView textView,
             SensorUpdate sensorUpdate) {
-        
+
         StringBuilder builder = new StringBuilder();
 
         builder.append("Sensor: ");
         builder.append(sensorUpdate.getSensor());
 
-        for (float value : sensorUpdate.getValues()) {
-            builder.append("\n");
-            builder.append(value);
+        float[] values = sensorUpdate.getValues();
+
+        if (values != null) {
+            for (float value : values) {
+                builder.append("\n");
+                builder.append(value);
+            }
         }
+
         textView.setText(builder.toString());
     }
 

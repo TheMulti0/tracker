@@ -72,7 +72,7 @@ public class ServerClient {
 
     private void updateCurrentSensor() {
         SensorUpdate currentSensor = _connection
-                .invoke(SensorUpdate.class, "GetCurrentLocation")
+                .invoke(SensorUpdate.class, "GetCurrentSensor")
                 .blockingGet();
 
         _sensor.onNext(currentSensor);

@@ -12,7 +12,7 @@
         public SensorUpdate Sensor { get; set; } = new SensorUpdate
         {
             Sensor = "idk",
-            Values = Array.Empty<float>()
+            Values = new float[]{0,1,3}
         };
     }
 }
