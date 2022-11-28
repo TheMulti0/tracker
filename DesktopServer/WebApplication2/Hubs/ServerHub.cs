@@ -11,9 +11,14 @@ namespace WebApplication2
             _state = state;
         }
 
-        public LocationUpdate SendCurrentLocation()
+        public LocationUpdate GetCurrentLocation()
         {
             return _state.Location;
+        }
+        
+        public SensorUpdate GetCurrentSensor()
+        {
+            return _state.Sensor;
         }
     }
 }
